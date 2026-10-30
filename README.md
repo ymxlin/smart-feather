@@ -9,7 +9,15 @@ An add-on for [Betterbird](https://www.betterbird.eu/) 153 ESR with extra featur
 
 Download the `.xpi` from the [latest release](https://github.com/ymxlin/smart-feather/releases/latest), then in Betterbird go to Add-ons Manager → gear icon → Install Add-on From File.
 
-The add-on asks for full access because it changes Betterbird's own windows. Installed copies update themselves from the releases in this repository.
+The add-on asks for full access because it changes Betterbird's own windows.
+
+## Updates
+
+Betterbird handles updates: it checks the releases in this repository once a day and installs new versions by itself.
+
+- **Turn automatic updates off:** set "Allow Automatic Updates" to Off on the add-on's page in the Add-ons Manager.
+- **Update now:** use the gear icon → Check for Updates.
+- **Change how often:** set `extensions.update.interval` (in seconds) in the Config Editor. This applies to all add-ons.
 
 ## Release
 
