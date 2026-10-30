@@ -1,0 +1,15 @@
+{
+  "extensionDescription": { "message": "讓 Betterbird 更好用的額外功能：滑鼠移到郵件清單上即可快速操作，並以文件編輯的方式寫信。" },
+  "styleNormal": { "message": "內文" },
+  "styleHeading1": { "message": "標題 1" },
+  "styleHeading2": { "message": "標題 2" },
+  "styleHeading3": { "message": "標題 3" },
+  "highlight": { "message": "螢光標記（Ctrl+Alt+H）" },
+  "reply": { "message": "回覆" },
+  "replyAll": { "message": "全部回覆" },
+  "archive": { "message": "封存" },
+  "delete": { "message": "刪除" },
+  "archiveThread": { "message": "封存整個討論串（{n} 封）" },
+  "deleteThread": { "message": "刪除整個討論串（{n} 封）" },
+  "actionFailed": { "message": "操作失敗：" }
+}

@@ -1,0 +1,26 @@
+[
+  {
+    "namespace": "composeDoc",
+    "functions": [
+      {
+        "name": "start",
+        "type": "function",
+        "async": true,
+        "description": "Give every compose window document-style formatting: paragraphs by default, named styles and highlighting. Safe to call more than once.",
+        "parameters": [
+          {
+            "name": "labels",
+            "type": "object",
+            "properties": {
+              "normal": { "type": "string" },
+              "heading1": { "type": "string" },
+              "heading2": { "type": "string" },
+              "heading3": { "type": "string" },
+              "highlight": { "type": "string" }
+            }
+          }
+        ]
+      }
+    ]
+  }
+]

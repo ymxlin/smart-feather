@@ -1,0 +1,15 @@
+{
+  "extensionDescription": { "message": "Extra features that make Betterbird better: quick actions when hovering over the message list, and document-style writing." },
+  "styleNormal": { "message": "Normal text" },
+  "styleHeading1": { "message": "Heading 1" },
+  "styleHeading2": { "message": "Heading 2" },
+  "styleHeading3": { "message": "Heading 3" },
+  "highlight": { "message": "Highlight (Ctrl+Alt+H)" },
+  "reply": { "message": "Reply" },
+  "replyAll": { "message": "Reply all" },
+  "archive": { "message": "Archive" },
+  "delete": { "message": "Delete" },
+  "archiveThread": { "message": "Archive thread ({n} messages)" },
+  "deleteThread": { "message": "Delete thread ({n} messages)" },
+  "actionFailed": { "message": "That action didn't work:" }
+}

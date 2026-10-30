@@ -1,0 +1,48 @@
+[
+  {
+    "namespace": "hoverActions",
+    "functions": [
+      {
+        "name": "start",
+        "type": "function",
+        "async": true,
+        "description": "Attach the hover toolbar to every message list. Safe to call more than once.",
+        "parameters": [
+          {
+            "name": "labels",
+            "type": "object",
+            "description": "Tooltips. In archiveThread and deleteThread, {n} is the message count.",
+            "properties": {
+              "reply": { "type": "string" },
+              "replyAll": { "type": "string" },
+              "archive": { "type": "string" },
+              "delete": { "type": "string" },
+              "archiveThread": { "type": "string" },
+              "deleteThread": { "type": "string" }
+            }
+          }
+        ]
+      }
+    ],
+    "events": [
+      {
+        "name": "onAction",
+        "type": "function",
+        "description": "A toolbar button was clicked.",
+        "parameters": [
+          {
+            "name": "action",
+            "type": "string",
+            "enum": ["reply", "replyAll", "archive", "delete"]
+          },
+          {
+            "name": "messageIds",
+            "type": "array",
+            "description": "One ID for a message; every message of the thread for archive or delete on a collapsed thread.",
+            "items": { "type": "integer" }
+          }
+        ]
+      }
+    ]
+  }
+]
