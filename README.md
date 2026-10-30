@@ -1,5 +1,11 @@
 # Smart Feather
 
+All along, I've been looking for the "best" mail client for me, someone who works across Windows, Linux desktop and Mac. The alternatives I tried didn't stay, each for its own reason, and I found myself back on Thunderbird, by way of its fork Betterbird.
+
+Thanks to the help of AI and inspiring conversations with group members, I'm now making it my own. Feel free to try it if it helps, and don't complain if it doesn't.
+
+## What it does
+
 An add-on for [Betterbird](https://www.betterbird.eu/) 153 ESR with extra features:
 
 - **Hover toolbar:** reply, reply all, archive and delete at the right edge of each message in the list.
