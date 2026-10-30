@@ -15,6 +15,7 @@ this.hoverActions = (() => {
     { action: "replyAll", icon: "reply-all.svg" },
     { action: "archive", icon: "archive.svg" },
     { action: "delete", icon: "trash.svg" },
+    { action: "summary", icon: "info.svg" },
   ];
   // After a click the next row slides under the pointer; a double click must not hit it.
   const COOLDOWN_MS = 500;
@@ -162,6 +163,7 @@ this.hoverActions = (() => {
       const many = described.threadCount > 1;
       buttons.reply.title = labels.reply;
       buttons.replyAll.title = labels.replyAll;
+      buttons.summary.title = labels.summary;
       buttons.archive.title = many ? labels.archiveThread.replace("{n}", described.threadCount) : labels.archive;
       buttons.delete.title = many ? labels.deleteThread.replace("{n}", described.threadCount) : labels.delete;
 

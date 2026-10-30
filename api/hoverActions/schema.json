@@ -18,7 +18,8 @@
               "archive": { "type": "string" },
               "delete": { "type": "string" },
               "archiveThread": { "type": "string" },
-              "deleteThread": { "type": "string" }
+              "deleteThread": { "type": "string" },
+              "summary": { "type": "string" }
             }
           }
         ]
@@ -33,7 +34,7 @@
           {
             "name": "action",
             "type": "string",
-            "enum": ["reply", "replyAll", "archive", "delete"]
+            "enum": ["reply", "replyAll", "archive", "delete", "summary"]
           },
           {
             "name": "messageIds",

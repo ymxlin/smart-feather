@@ -22,6 +22,11 @@
     "default_label": "__MSG_aiButton__",
     "default_icon": "icons/ai.svg"
   },
+  "message_display_action": {
+    "default_title": "__MSG_summaryButton__",
+    "default_label": "__MSG_summaryButton__",
+    "default_icon": "icons/ai.svg"
+  },
   "options_ui": {
     "page": "options/options.html",
     "open_in_tab": false,

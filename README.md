@@ -8,17 +8,20 @@ Thanks to the help of AI and inspiring conversations with group members, I'm now
 
 An add-on for [Betterbird](https://www.betterbird.eu/) 153 ESR with extra features:
 
-- **Hover toolbar:** reply, reply all, archive and delete at the right edge of each message in the list.
+- **Hover toolbar:** reply, reply all, archive, delete and AI Summary at the right edge of each message in the list.
 - **Document-style writing:** Normal text and Heading 1–3, Enter for a paragraph, Shift+Enter for a line break, and one-click highlight (Ctrl+Alt+H). Ctrl+Alt+0–3 switch styles.
 - **AI help:** suggests a revision of a new letter, or drafts a reply from the message you're answering. You edit the suggestion before it goes into your letter.
+- **AI Summary:** summarizes a message in a small window, from the hover toolbar or the button on the message.
 
 ## AI help
 
-AI help works with any OpenAI-compatible server, local or remote, and stays off until you set one up in the add-on's Options tab. Enter the server address, API key if needed, and model, then use **Test connection**. Both prompts can be edited there.
+AI help works with any OpenAI-compatible server, local or remote, and stays off until you set one up in the add-on's Options tab. Enter the server address, API key if needed, and model, then use **Test connection**. AI help and AI Summary share these settings, and each kind of request has its own prompt you can edit there.
 
 In the compose window, click **AI help**. If you've selected text, only that part is revised. In a reply, anything you've written above or below the quote is used as notes for the draft.
 
-Text is sent only when you click a button in the AI help window, and only to the server you chose. That means a remote server receives your letter, or the message you're replying to. The API key is stored unencrypted in your Betterbird profile.
+AI Summary is on the hover toolbar and on the message itself. Some add-ons, such as NovaBird-Conversation, hide the message's button; the hover toolbar still works. Long messages are cut off at 12,000 characters before they're sent.
+
+Text is sent only when you click AI Summary or a button in the AI help window, and only to the server you chose. That means a remote server receives your letter, or the message you're replying to or summarizing. The API key is stored unencrypted in your Betterbird profile.
 
 ## Install
 

@@ -1,7 +1,6 @@
 const t = (key, ...args) => messenger.i18n.getMessage(key, args);
 const $ = id => document.getElementById(id);
 const tabId = Number(new URLSearchParams(location.search).get("tab"));
-const MAX_ORIGINAL_CHARS = 12000;
 
 let settings;
 let isReply = false;
@@ -30,21 +29,12 @@ function showSuggestion(text) {
   $("generate").textContent = t("aiTryAgain");
 }
 
-async function readOriginal() {
-  const header = await messenger.messages.get(relatedMessageId);
-  const parts = await messenger.messages.listInlineTextParts(relatedMessageId);
-  const plain = parts.find(part => part.contentType === "text/plain");
-  const html = parts.find(part => part.contentType === "text/html");
-  const text = plain ? plain.content : html ? await messenger.messengerUtilities.convertToPlainText(html.content) : "";
-  return { author: header.author, subject: header.subject, text: text.slice(0, MAX_ORIGINAL_CHARS) };
-}
-
 async function buildRequest() {
   const draft = await messenger.aiHelp.getDraft(tabId);
   $("insert").textContent = t(draft.scope === "empty" ? "aiInsert" : "aiReplace");
   const instruction = $("instruction").value.trim();
   if (isReply) {
-    return replyRequest(settings, await readOriginal(), draft.text, instruction);
+    return replyRequest(settings, await readMessage(relatedMessageId), draft.text, instruction);
   }
   return draft.text ? reviseRequest(settings, draft.text, instruction) : null;
 }

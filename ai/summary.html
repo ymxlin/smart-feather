@@ -1,0 +1,31 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../options/options.css" />
+    <link rel="stylesheet" href="panel.css" />
+  </head>
+  <body>
+    <h1 data-i18n="summaryButton"></h1>
+
+    <section id="setup" hidden>
+      <p data-i18n="aiNotConfigured"></p>
+      <button id="openSettings" data-i18n="aiOpenSettings"></button>
+    </section>
+
+    <section id="work" hidden>
+      <p id="subject" class="hint"></p>
+      <p id="destination" class="hint"></p>
+      <p id="status" role="status"></p>
+      <textarea id="suggestion" rows="12" readonly hidden></textarea>
+      <div class="row">
+        <button id="again" data-i18n="aiTryAgain" hidden></button>
+        <button id="cancel" data-i18n="aiCancel" hidden></button>
+        <button id="copy" data-i18n="summaryCopy" hidden></button>
+      </div>
+    </section>
+
+    <script src="client.js"></script>
+    <script src="summary.js"></script>
+  </body>
+</html>

@@ -5,7 +5,23 @@ const handlers = {
   replyAll: ids => messenger.compose.beginReply(ids[0], "replyToAll"),
   archive: ids => messenger.messages.archive(ids),
   delete: ids => messenger.messages.delete(ids, { isUserAction: true }),
+  summary: ids => openSummary(ids[0]),
 };
+
+// Open pages are found through getViews: windows.create doesn't always resolve, so its ID can't be relied on.
+const findPage = (path, search = "") =>
+  messenger.extension.getViews().find(view => view.location.pathname === path && (!search || view.location.search === search));
+
+function openSummary(messageId) {
+  const search = `?message=${messageId}`;
+  const open = findPage("/ai/summary.html");
+  if (open) {
+    open.location.search = search;
+    open.focus();
+    return;
+  }
+  messenger.windows.create({ type: "popup", url: `ai/summary.html${search}`, width: 520, height: 560 });
+}
 
 messenger.hoverActions.onAction.addListener(async (action, ids) => {
   try {
@@ -27,6 +43,14 @@ messenger.hoverActions.start({
   delete: t("delete"),
   archiveThread: t("archiveThread"),
   deleteThread: t("deleteThread"),
+  summary: t("summaryButton"),
+});
+
+messenger.messageDisplayAction.onClicked.addListener(async tab => {
+  const message = await messenger.messageDisplay.getDisplayedMessage(tab.id);
+  if (message) {
+    openSummary(message.id);
+  }
 });
 
 messenger.composeDoc.start({
@@ -38,34 +62,16 @@ messenger.composeDoc.start({
 });
 
 // AI help opens as its own window: a popup would close, and lose the suggestion, on the first click in the letter.
-const aiPanels = new Map(); // compose tab ID -> panel window ID
-
-messenger.composeAction.onClicked.addListener(async tab => {
-  const open = aiPanels.get(tab.id);
-  if (open !== undefined) {
-    await messenger.windows.update(open, { focused: true });
+messenger.composeAction.onClicked.addListener(tab => {
+  const search = `?tab=${tab.id}`;
+  const open = findPage("/ai/panel.html", search);
+  if (open) {
+    open.focus();
     return;
   }
-  const panel = await messenger.windows.create({
-    type: "popup",
-    url: `ai/panel.html?tab=${tab.id}`,
-    width: 520,
-    height: 620,
-  });
-  aiPanels.set(tab.id, panel.id);
-});
-
-messenger.windows.onRemoved.addListener(windowId => {
-  for (const [tabId, panelId] of aiPanels) {
-    if (panelId === windowId) {
-      aiPanels.delete(tabId);
-    }
-  }
+  messenger.windows.create({ type: "popup", url: `ai/panel.html${search}`, width: 520, height: 620 });
 });
 
 messenger.tabs.onRemoved.addListener(tabId => {
-  const panelId = aiPanels.get(tabId);
-  if (panelId !== undefined) {
-    messenger.windows.remove(panelId);
-  }
+  findPage("/ai/panel.html", `?tab=${tabId}`)?.close();
 });

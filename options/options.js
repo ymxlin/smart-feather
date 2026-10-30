@@ -27,7 +27,7 @@ async function load() {
 }
 
 async function testConnection() {
-  await Promise.all(Object.keys(AI_DEFAULTS).map(saveField));
+  await Promise.all(["aiBaseUrl", "aiApiKey", "aiModel"].map(saveField));
   const settings = await aiSettings();
   if (!settings.aiBaseUrl.trim()) {
     setStatus(t("aiTestNeedsUrl"), true);
@@ -70,7 +70,8 @@ $("test").addEventListener("click", testConnection);
 $("resetPrompts").addEventListener("click", async () => {
   $("aiRevisePrompt").value = AI_DEFAULTS.aiRevisePrompt;
   $("aiReplyPrompt").value = AI_DEFAULTS.aiReplyPrompt;
-  await Promise.all(["aiRevisePrompt", "aiReplyPrompt"].map(saveField));
+  $("aiSummaryPrompt").value = AI_DEFAULTS.aiSummaryPrompt;
+  await messenger.storage.local.remove(["aiRevisePrompt", "aiReplyPrompt", "aiSummaryPrompt"]); // follow future defaults again
 });
 
 load();
