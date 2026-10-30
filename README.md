@@ -24,11 +24,11 @@ AI Summary is on the hover toolbar and on the message itself. Some add-ons, such
 Text is sent only when you click AI Summary or a button in the AI Writing Assistant window, and only to the server you chose. That means a remote server receives your letter, or the message you're replying to or summarizing. The API key is stored unencrypted in your Betterbird profile.
 
 ## Test Env
-- FileLink Provider for Dropbox
-- Filter on Folder Button
-- NovaBird
-- Signature Switch
-- XNote++
+- FileLink Provider for Dropbox (v7)
+- Filter on Folder Button (v1.6.2)
+- [NovaBird](https://github.com/Novabird-Addons/NovaBird)
+- Signature Switch (v2.20.2)
+- XNote++ (v4.10.31)
 
 ## Install
 
