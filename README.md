@@ -13,4 +13,14 @@ The add-on asks for full access because it changes Betterbird's own windows. Ins
 
 ## Release
 
-Bump `version` in `manifest.json`, then run `release.ps1`. It builds the add-on and publishes a release with the `.xpi` and `updates.json`. It needs the GitHub CLI, signed in.
+Bump `version` in `manifest.json`, commit and push, then run `release.ps1`. It builds the add-on and publishes a release with the `.xpi` and `updates.json`. It needs PowerShell 7 and the GitHub CLI, signed in.
+
+## Make your own copy
+
+This repository is a template, so the updater comes with it:
+
+1. Click **Use this template**. The new repository must be public, because Betterbird can't sign in to download from a private one.
+2. Clone it and run `release.ps1`.
+3. Install the `.xpi` from your release by hand once.
+
+The build reads the update address from the repository's GitHub remote, so your copy watches only your releases and gets its own add-on ID. It never checks this repository.
