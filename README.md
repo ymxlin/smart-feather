@@ -1,6 +1,6 @@
 # Smart Feather
 
-All along, I've been looking for the "best" mail client for me, someone who works across Windows, Linux desktop and Mac. The alternatives I tried didn't stay, each for its own reason, and I found myself back on Thunderbird, by way of its fork Betterbird. This add-on is meant to be as thin as possible and let models do the smart part. All UI is AI generated, as UI design has been one of my area to improve. The name `Smart Feather` means this add-on is intended to make your email client smarter while getting along with others "feathers".
+All along, I've been looking for the "best" mail client for me, someone who works across Windows, Linux desktop and Mac. The alternatives I tried didn't stay, each for its own reason, and I found myself back on Thunderbird, by way of its fork Betterbird. This add-on is meant to be as thin as possible and let models be the smart part. All UI is AI generated, as UI design has been one of my area to improve. The name `Smart Feather` means this add-on is intended to make your email client smarter while getting along with others "feathers".
 
 Thanks to the help of AI and inspiring conversations with group members, I'm now making it my own. Feel free to try it if it helps, and don't complain if it doesn't.
 
