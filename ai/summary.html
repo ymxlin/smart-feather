@@ -4,6 +4,7 @@
     <meta charset="utf-8" />
     <link rel="stylesheet" href="../options/options.css" />
     <link rel="stylesheet" href="panel.css" />
+    <link rel="stylesheet" href="summary.css" />
   </head>
   <body>
     <h1 data-i18n="summaryButton"></h1>
@@ -17,7 +18,7 @@
       <p id="subject" class="hint"></p>
       <p id="destination" class="hint"></p>
       <p id="status" role="status"></p>
-      <textarea id="suggestion" rows="12" readonly hidden></textarea>
+      <div id="output" hidden></div>
       <div class="row">
         <button id="again" data-i18n="aiTryAgain" hidden></button>
         <button id="cancel" data-i18n="aiCancel" hidden></button>
@@ -26,6 +27,7 @@
     </section>
 
     <script src="client.js"></script>
+    <script src="markdown.js"></script>
     <script src="summary.js"></script>
   </body>
 </html>

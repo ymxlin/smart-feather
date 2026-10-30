@@ -5,6 +5,7 @@ const messageId = Number(new URLSearchParams(location.search).get("message"));
 let settings;
 let original;
 let requestId = null;
+let summaryText = "";
 
 for (const element of document.querySelectorAll("[data-i18n]")) {
   element.textContent = t(element.dataset.i18n);
@@ -30,8 +31,9 @@ async function summarize() {
     } else if (!text) {
       setStatus(t("aiErrorEmpty"), true);
     } else {
-      $("suggestion").value = text;
-      $("suggestion").hidden = false;
+      summaryText = text;
+      renderMarkdown(text, $("output"));
+      $("output").hidden = false;
       $("copy").hidden = false;
       setStatus(t("summaryDone", String(Math.round((Date.now() - started) / 1000))));
     }
@@ -47,7 +49,7 @@ async function summarize() {
 $("again").addEventListener("click", summarize);
 $("cancel").addEventListener("click", () => requestId && messenger.aiHelp.cancel(requestId));
 $("openSettings").addEventListener("click", () => messenger.runtime.openOptionsPage());
-$("copy").addEventListener("click", () => navigator.clipboard.writeText($("suggestion").value));
+$("copy").addEventListener("click", () => navigator.clipboard.writeText(summaryText));
 
 async function start() {
   settings = await aiSettings();

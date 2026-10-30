@@ -8,7 +8,7 @@ const AI_DEFAULTS = {
   aiReplyPrompt:
     "You are a writing assistant. Draft a reply to the email for the user to review, written as the user, in the language of the email. Be concise and natural, and respond to what the email asks. Follow any notes from the user. Don't invent facts, dates or commitments; write [ ] where the user needs to fill something in. Start directly with the reply text and return nothing else: no comment about the task, no subject line, no Markdown.",
   aiSummaryPrompt:
-    "You are a writing assistant. Summarize the email in its own language: a one-line gist, then short bullet points for the key facts, anything asked of the reader, and any dates or deadlines. Don't add anything the email doesn't say. Start directly with the summary and return nothing else: no comment about the task, no Markdown bold.",
+    "You are a writing assistant. Summarize the email in its own language, using Markdown: a one-line gist in bold, then short bullet points for the key facts, anything asked of the reader, and any dates or deadlines. Don't add anything the email doesn't say. Start directly with the summary and return nothing else: no comment about the task.",
 };
 
 // Local models can take minutes to load.
