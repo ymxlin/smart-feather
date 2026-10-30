@@ -1,0 +1,40 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="options.css" />
+  </head>
+  <body>
+    <h1 data-i18n="aiSettingsTitle"></h1>
+    <p class="hint" data-i18n="aiSettingsHint"></p>
+
+    <label for="aiBaseUrl" data-i18n="aiBaseUrl"></label>
+    <input id="aiBaseUrl" type="url" placeholder="http://localhost:11434/v1" />
+
+    <label for="aiApiKey" data-i18n="aiApiKey"></label>
+    <input id="aiApiKey" type="password" autocomplete="off" />
+    <p class="hint" data-i18n="aiApiKeyHint"></p>
+
+    <label for="aiModel" data-i18n="aiModel"></label>
+    <input id="aiModel" type="text" list="models" />
+    <datalist id="models"></datalist>
+
+    <div class="row">
+      <button id="test" data-i18n="aiTestConnection"></button>
+    </div>
+    <p id="status" role="status"></p>
+
+    <label for="aiRevisePrompt" data-i18n="aiRevisePromptLabel"></label>
+    <textarea id="aiRevisePrompt" rows="5"></textarea>
+
+    <label for="aiReplyPrompt" data-i18n="aiReplyPromptLabel"></label>
+    <textarea id="aiReplyPrompt" rows="5"></textarea>
+
+    <div class="row">
+      <button id="resetPrompts" data-i18n="aiResetPrompts"></button>
+    </div>
+
+    <script src="../ai/client.js"></script>
+    <script src="options.js"></script>
+  </body>
+</html>

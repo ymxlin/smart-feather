@@ -10,6 +10,15 @@ An add-on for [Betterbird](https://www.betterbird.eu/) 153 ESR with extra featur
 
 - **Hover toolbar:** reply, reply all, archive and delete at the right edge of each message in the list.
 - **Document-style writing:** Normal text and Heading 1–3, Enter for a paragraph, Shift+Enter for a line break, and one-click highlight (Ctrl+Alt+H). Ctrl+Alt+0–3 switch styles.
+- **AI help:** suggests a revision of a new letter, or drafts a reply from the message you're answering. You edit the suggestion before it goes into your letter.
+
+## AI help
+
+AI help works with any OpenAI-compatible server, local or remote, and stays off until you set one up in the add-on's Options tab. Enter the server address, API key if needed, and model, then use **Test connection**. Both prompts can be edited there.
+
+In the compose window, click **AI help**. If you've selected text, only that part is revised. In a reply, anything you've written above or below the quote is used as notes for the draft.
+
+Text is sent only when you click a button in the AI help window, and only to the server you chose. That means a remote server receives your letter, or the message you're replying to. The API key is stored unencrypted in your Betterbird profile.
 
 ## Install
 

@@ -1,0 +1,40 @@
+html {
+  block-size: 100%;
+}
+
+body {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  min-block-size: 100%;
+  max-inline-size: none;
+  background: Canvas;
+}
+
+#work {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 8px;
+}
+
+#work[hidden] {
+  display: none;
+}
+
+#instruction {
+  inline-size: 100%;
+  box-sizing: border-box;
+}
+
+#suggestion {
+  flex: 1;
+  inline-size: 100%;
+  box-sizing: border-box;
+  resize: none;
+  font: inherit;
+}
+
+#status {
+  margin: 0;
+}

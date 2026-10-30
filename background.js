@@ -36,3 +36,36 @@ messenger.composeDoc.start({
   heading3: t("styleHeading3"),
   highlight: t("highlight"),
 });
+
+// AI help opens as its own window: a popup would close, and lose the suggestion, on the first click in the letter.
+const aiPanels = new Map(); // compose tab ID -> panel window ID
+
+messenger.composeAction.onClicked.addListener(async tab => {
+  const open = aiPanels.get(tab.id);
+  if (open !== undefined) {
+    await messenger.windows.update(open, { focused: true });
+    return;
+  }
+  const panel = await messenger.windows.create({
+    type: "popup",
+    url: `ai/panel.html?tab=${tab.id}`,
+    width: 520,
+    height: 620,
+  });
+  aiPanels.set(tab.id, panel.id);
+});
+
+messenger.windows.onRemoved.addListener(windowId => {
+  for (const [tabId, panelId] of aiPanels) {
+    if (panelId === windowId) {
+      aiPanels.delete(tabId);
+    }
+  }
+});
+
+messenger.tabs.onRemoved.addListener(tabId => {
+  const panelId = aiPanels.get(tabId);
+  if (panelId !== undefined) {
+    messenger.windows.remove(panelId);
+  }
+});

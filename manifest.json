@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "Smart Feather",
   "description": "__MSG_extensionDescription__",
-  "version": "0.2.3",
+  "version": "0.4.0",
   "default_locale": "en",
   "icons": {
     "128": "icons/icon128.png"
@@ -13,9 +13,19 @@
       "strict_min_version": "153.0"
     }
   },
-  "permissions": ["compose", "messagesRead", "messagesMove", "messagesDelete", "notifications"],
+  "permissions": ["compose", "messagesRead", "messagesMove", "messagesDelete", "notifications", "storage"],
   "background": {
     "scripts": ["background.js"]
+  },
+  "compose_action": {
+    "default_title": "__MSG_aiButton__",
+    "default_label": "__MSG_aiButton__",
+    "default_icon": "icons/ai.svg"
+  },
+  "options_ui": {
+    "page": "options/options.html",
+    "open_in_tab": false,
+    "browser_style": false
   },
   "experiment_apis": {
     "hoverActions": {
@@ -32,6 +42,14 @@
         "scopes": ["addon_parent"],
         "paths": [["composeDoc"]],
         "script": "api/composeDoc/implementation.js"
+      }
+    },
+    "aiHelp": {
+      "schema": "api/aiHelp/schema.json",
+      "parent": {
+        "scopes": ["addon_parent"],
+        "paths": [["aiHelp"]],
+        "script": "api/aiHelp/implementation.js"
       }
     }
   }

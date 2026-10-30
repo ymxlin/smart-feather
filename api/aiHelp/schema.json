@@ -1,0 +1,49 @@
+[
+  {
+    "namespace": "aiHelp",
+    "functions": [
+      {
+        "name": "request",
+        "type": "function",
+        "async": true,
+        "description": "Call the configured server from Betterbird itself: pages of an add-on send an Origin header that local servers such as Ollama reject. Resolves to {ok, status, body} or {aborted: true}.",
+        "parameters": [
+          {
+            "name": "options",
+            "type": "object",
+            "properties": {
+              "url": { "type": "string" },
+              "apiKey": { "type": "string", "optional": true },
+              "payload": { "type": "string", "optional": true, "description": "JSON to POST; GET when left out." },
+              "requestId": { "type": "string", "description": "Pass the same ID to cancel()." },
+              "timeoutMs": { "type": "integer" }
+            }
+          }
+        ]
+      },
+      {
+        "name": "cancel",
+        "type": "function",
+        "async": true,
+        "parameters": [{ "name": "requestId", "type": "string" }]
+      },
+      {
+        "name": "getDraft",
+        "type": "function",
+        "async": true,
+        "description": "The user's own text in a compose tab: the selection if there is one, otherwise what they wrote, without quotes or signature. Resolves to {text, scope}.",
+        "parameters": [{ "name": "tabId", "type": "integer" }]
+      },
+      {
+        "name": "applySuggestion",
+        "type": "function",
+        "async": true,
+        "description": "Replace the text getDraft reports with the suggestion, or insert it at the caret when there is none. Can be undone in the editor.",
+        "parameters": [
+          { "name": "tabId", "type": "integer" },
+          { "name": "text", "type": "string" }
+        ]
+      }
+    ]
+  }
+]

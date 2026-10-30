@@ -1,0 +1,67 @@
+:root {
+  color-scheme: light dark;
+}
+
+body {
+  max-inline-size: 560px;
+  margin: 0;
+  padding: 16px;
+  font: message-box;
+  font-size: 14px;
+  line-height: 1.5;
+  background: transparent;
+  color: CanvasText;
+}
+
+h1 {
+  margin: 0 0 8px;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+label {
+  display: block;
+  margin-block: 12px 4px;
+  font-weight: 600;
+}
+
+input,
+textarea {
+  inline-size: 100%;
+  box-sizing: border-box;
+  font: inherit;
+}
+
+textarea {
+  resize: vertical;
+}
+
+.hint {
+  margin: 4px 0;
+  font-size: 12px;
+  opacity: 0.8;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin-block-start: 12px;
+}
+
+#status {
+  min-block-size: 1.5em;
+  margin: 8px 0 0;
+  overflow-wrap: anywhere;
+}
+
+#status[data-status="failed"] {
+  color: #c5221f;
+}
+
+@media (prefers-color-scheme: dark) {
+  #status[data-status="failed"] {
+    color: #ff8a80;
+  }
+}
