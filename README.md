@@ -48,7 +48,7 @@ Betterbird handles updates: it checks the releases in this repository once a day
 
 | Version | Date | Changes |
 | --- | --- | --- |
-| 0.3.1 | Not released yet | The AI Writing Assistant suggests a subject when a letter has none or has moved to another topic. The subject prompt can be edited in Options. |
+| 0.3.1 | 2026-10-30 | The AI Writing Assistant suggests a subject when a letter has none or has moved to another topic. The subject prompt can be edited in Options. |
 | 0.3.0 | 2026-10-30 | Added the AI Writing Assistant for revising letters and drafting replies, AI Summary with Markdown formatting, and an Options page for an OpenAI-compatible server, with prompts and Test connection. |
 | 0.2.3 | 2026-10-30 | The update address now comes from the GitHub repository, so template copies watch their own releases. |
 | 0.2.2 | 2026-10-30 | First public release: hover toolbar, document-style writing and automatic updates. |
