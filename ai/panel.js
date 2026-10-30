@@ -6,6 +6,8 @@ let settings;
 let isReply = false;
 let relatedMessageId;
 let requestId = null;
+let currentSubject = "";
+let wantsSubject = false;
 
 for (const element of document.querySelectorAll("[data-i18n]")) {
   element.textContent = t(element.dataset.i18n);
@@ -22,17 +24,44 @@ function setBusy(busy) {
   $("insert").disabled = busy;
 }
 
+const topicOf = subject => subject.replace(/^\s*(re|aw|回覆|答覆)\s*[:：]\s*/i, "").trim().toLowerCase();
+
+function showSubject(subject) {
+  const changed = subject && topicOf(subject) !== topicOf(currentSubject);
+  $("subjectRow").hidden = !changed;
+  if (changed) {
+    $("subject").value = subject;
+    $("useSubject").checked = true;
+    $("subjectCurrent").textContent = currentSubject ? t("aiSubjectCurrent", currentSubject) : "";
+  }
+}
+
 function showSuggestion(text) {
-  $("suggestion").value = text;
+  $("suggestion").value = stripSubjectLine(text);
   $("suggestion").hidden = false;
   $("insert").hidden = false;
   $("generate").textContent = t("aiTryAgain");
+}
+
+async function suggestSubject() {
+  setStatus(t("aiCheckingSubject"));
+  try {
+    const prompt = subjectRequest(settings, $("suggestion").value, currentSubject);
+    const answer = await chat(settings, prompt.system, prompt.user, requestId);
+    showSubject(cleanSubject(answer ?? ""));
+  } catch (error) {
+    // The letter is what matters: keep it even if this extra step fails.
+    console.warn("Smart Feather: subject check failed:", error);
+  }
 }
 
 async function buildRequest() {
   const draft = await messenger.aiHelp.getDraft(tabId);
   $("insert").textContent = t(draft.scope === "empty" ? "aiInsert" : "aiReplace");
   const instruction = $("instruction").value.trim();
+  currentSubject = (await messenger.compose.getComposeDetails(tabId)).subject ?? "";
+  // A selection is only part of the letter, too little to judge the subject from.
+  wantsSubject = draft.scope !== "selection";
   if (isReply) {
     return replyRequest(settings, await readMessage(relatedMessageId), draft.text, instruction);
   }
@@ -42,6 +71,7 @@ async function buildRequest() {
 async function generate() {
   setBusy(true);
   setStatus(t("aiWorking"));
+  $("subjectRow").hidden = true;
   requestId = crypto.randomUUID();
   try {
     const prompt = await buildRequest();
@@ -57,6 +87,9 @@ async function generate() {
       setStatus(t("aiErrorEmpty"), true);
     } else {
       showSuggestion(text);
+      if (wantsSubject) {
+        await suggestSubject();
+      }
       setStatus(t("aiDone", String(Math.round((Date.now() - started) / 1000))));
     }
   } catch (error) {
@@ -74,6 +107,10 @@ $("openSettings").addEventListener("click", () => messenger.runtime.openOptionsP
 $("insert").addEventListener("click", async () => {
   try {
     await messenger.aiHelp.applySuggestion(tabId, $("suggestion").value);
+    const subject = $("subject").value.trim();
+    if (!$("subjectRow").hidden && $("useSubject").checked && subject) {
+      await messenger.compose.setComposeDetails(tabId, { subject });
+    }
     window.close();
   } catch (error) {
     setStatus(t("aiInsertFailed", error.message), true);

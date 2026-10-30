@@ -1,9 +1,9 @@
-/* Privileged side of AI help: reaching the model server, and reading and changing the letter being written. */
+/* Privileged side of the AI Writing Assistant: reaching the model server, and reading and changing the letter being written. */
 "use strict";
 this.aiHelp = (() => {
   const { ExtensionCommon } = ChromeUtils.importESModule("resource://gre/modules/ExtensionCommon.sys.mjs");
 
-  // Quoted mail, forwards and signatures aren't the user's own writing, so AI help never touches them.
+  // Quoted mail, forwards and signatures aren't the user's own writing, so the assistant never touches them.
   const NOT_OWN_TEXT = "blockquote[type=cite], .moz-cite-prefix, .moz-signature, .moz-forward-container";
   const requests = new Map(); // requestId -> AbortController
 

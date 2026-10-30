@@ -27,6 +27,14 @@ body {
   box-sizing: border-box;
 }
 
+#subjectRow .check {
+  margin-block-start: 0;
+}
+
+#useSubject {
+  inline-size: auto;
+}
+
 #suggestion {
   flex: 1;
   inline-size: 100%;

@@ -1,6 +1,6 @@
 # Smart Feather
 
-All along, I've been looking for the "best" mail client for me, someone who works across Windows, Linux desktop and Mac. The alternatives I tried didn't stay, each for its own reason, and I found myself back on Thunderbird, by way of its fork Betterbird.
+All along, I've been looking for the "best" mail client for me, someone who works across Windows, Linux desktop and Mac. The alternatives I tried didn't stay, each for its own reason, and I found myself back on Thunderbird, by way of its fork Betterbird. This add-on is meant to be as thin as possible and let models do the smart part. All UI is AI generated, as UI design has been one of my area to improve. The name `Smart Feather` means this add-on is intended to make your email client smarter while getting along with others "feathers".
 
 Thanks to the help of AI and inspiring conversations with group members, I'm now making it my own. Feel free to try it if it helps, and don't complain if it doesn't.
 
@@ -10,18 +10,25 @@ An add-on for [Betterbird](https://www.betterbird.eu/) 153 ESR with extra featur
 
 - **Hover toolbar:** reply, reply all, archive, delete and AI Summary at the right edge of each message in the list.
 - **Document-style writing:** Normal text and Heading 1–3, Enter for a paragraph, Shift+Enter for a line break, and one-click highlight (Ctrl+Alt+H). Ctrl+Alt+0–3 switch styles.
-- **AI help:** suggests a revision of a new letter, or drafts a reply from the message you're answering. You edit the suggestion before it goes into your letter.
+- **AI Writing Assistant:** suggests a revision of a new letter, or drafts a reply from the message you're answering. You edit the suggestion before it goes into your letter.
 - **AI Summary:** summarizes a message in a small window, from the hover toolbar or the button on the message.
 
-## AI help
+## AI Writing Assistant
 
-AI help works with any OpenAI-compatible server, local or remote, and stays off until you set one up in the add-on's Options tab. Enter the server address, API key if needed, and model, then use **Test connection**. AI help and AI Summary share these settings, and each kind of request has its own prompt you can edit there.
+The AI Writing Assistant works with any OpenAI-compatible server, local or remote, and stays off until you set one up in the add-on's Options tab. Enter the server address, API key if needed, and model, then use **Test connection**. The AI Writing Assistant and AI Summary share these settings, and each kind of request has its own prompt you can edit there.
 
-In the compose window, click **AI help**. If you've selected text, only that part is revised. In a reply, anything you've written above or below the quote is used as notes for the draft.
+In the compose window, click **AI Writing Assistant**. If you've selected text, only that part is revised. In a reply, anything you've written above or below the quote is used as notes for the draft. It also checks the subject once the letter is written, and offers a new one if the letter has none or has moved to another topic. Replies stay in their thread when the subject changes.
 
 AI Summary is on the hover toolbar and on the message itself. Some add-ons, such as NovaBird-Conversation, hide the message's button; the hover toolbar still works. Long messages are cut off at 12,000 characters before they're sent.
 
-Text is sent only when you click AI Summary or a button in the AI help window, and only to the server you chose. That means a remote server receives your letter, or the message you're replying to or summarizing. The API key is stored unencrypted in your Betterbird profile.
+Text is sent only when you click AI Summary or a button in the AI Writing Assistant window, and only to the server you chose. That means a remote server receives your letter, or the message you're replying to or summarizing. The API key is stored unencrypted in your Betterbird profile.
+
+## Test Env
+- FileLink Provider for Dropbox
+- Filter on Folder Button
+- NovaBird
+- Signature Switch
+- XNote++
 
 ## Install
 
@@ -36,6 +43,15 @@ Betterbird handles updates: it checks the releases in this repository once a day
 - **Turn automatic updates off:** set "Allow Automatic Updates" to Off on the add-on's page in the Add-ons Manager.
 - **Update now:** use the gear icon → Check for Updates.
 - **Change how often:** set `extensions.update.interval` (in seconds) in the Config Editor. This applies to all add-ons.
+
+## Version history
+
+| Version | Date | Changes |
+| --- | --- | --- |
+| 0.3.1 | Not released yet | The AI Writing Assistant suggests a subject when a letter has none or has moved to another topic. The subject prompt can be edited in Options. |
+| 0.3.0 | 2026-10-30 | Added the AI Writing Assistant for revising letters and drafting replies, AI Summary with Markdown formatting, and an Options page for an OpenAI-compatible server, with prompts and Test connection. |
+| 0.2.3 | 2026-10-30 | The update address now comes from the GitHub repository, so template copies watch their own releases. |
+| 0.2.2 | 2026-10-30 | First public release: hover toolbar, document-style writing and automatic updates. |
 
 ## Release
 

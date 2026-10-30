@@ -61,7 +61,7 @@ messenger.composeDoc.start({
   highlight: t("highlight"),
 });
 
-// AI help opens as its own window: a popup would close, and lose the suggestion, on the first click in the letter.
+// The AI Writing Assistant opens as its own window: a popup would close, and lose the suggestion, on the first click in the letter.
 messenger.composeAction.onClicked.addListener(tab => {
   const search = `?tab=${tab.id}`;
   const open = findPage("/ai/panel.html", search);

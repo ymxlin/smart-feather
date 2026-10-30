@@ -70,8 +70,9 @@ $("test").addEventListener("click", testConnection);
 $("resetPrompts").addEventListener("click", async () => {
   $("aiRevisePrompt").value = AI_DEFAULTS.aiRevisePrompt;
   $("aiReplyPrompt").value = AI_DEFAULTS.aiReplyPrompt;
+  $("aiSubjectPrompt").value = AI_DEFAULTS.aiSubjectPrompt;
   $("aiSummaryPrompt").value = AI_DEFAULTS.aiSummaryPrompt;
-  await messenger.storage.local.remove(["aiRevisePrompt", "aiReplyPrompt", "aiSummaryPrompt"]); // follow future defaults again
+  await messenger.storage.local.remove(["aiRevisePrompt", "aiReplyPrompt", "aiSubjectPrompt", "aiSummaryPrompt"]); // follow future defaults again
 });
 
 load();
