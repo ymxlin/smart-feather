@@ -25,7 +25,12 @@ label {
   font-weight: 600;
 }
 
+h1:not(:first-of-type) {
+  margin-block-start: 28px;
+}
+
 input,
+select,
 textarea {
   inline-size: 100%;
   box-sizing: border-box;
@@ -50,18 +55,18 @@ textarea {
   margin-block-start: 12px;
 }
 
-#status {
+[role="status"] {
   min-block-size: 1.5em;
   margin: 8px 0 0;
   overflow-wrap: anywhere;
 }
 
-#status[data-status="failed"] {
+[role="status"][data-status="failed"] {
   color: #c5221f;
 }
 
 @media (prefers-color-scheme: dark) {
-  #status[data-status="failed"] {
+  [role="status"][data-status="failed"] {
     color: #ff8a80;
   }
 }

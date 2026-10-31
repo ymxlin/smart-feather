@@ -19,7 +19,8 @@
               "delete": { "type": "string" },
               "archiveThread": { "type": "string" },
               "deleteThread": { "type": "string" },
-              "summary": { "type": "string" }
+              "summary": { "type": "string" },
+              "moreLike": { "type": "string" }
             }
           }
         ]
@@ -34,7 +35,7 @@
           {
             "name": "action",
             "type": "string",
-            "enum": ["reply", "replyAll", "archive", "delete", "summary"]
+            "enum": ["reply", "replyAll", "archive", "delete", "summary", "moreLike"]
           },
           {
             "name": "messageIds",

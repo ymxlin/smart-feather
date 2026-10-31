@@ -1,4 +1,4 @@
-const t = key => messenger.i18n.getMessage(key);
+const t = (key, ...args) => messenger.i18n.getMessage(key, args);
 
 const handlers = {
   reply: ids => messenger.compose.beginReply(ids[0], "replyToSender"),
@@ -6,6 +6,7 @@ const handlers = {
   archive: ids => messenger.messages.archive(ids),
   delete: ids => messenger.messages.delete(ids, { isUserAction: true }),
   summary: ids => openSummary(ids[0]),
+  moreLike: ids => openSearch(`?message=${ids[0]}`),
 };
 
 // Open pages are found through getViews: windows.create doesn't always resolve, so its ID can't be relied on.
@@ -22,6 +23,25 @@ function openSummary(messageId) {
   }
   messenger.windows.create({ type: "popup", url: `ai/summary.html${search}`, width: 520, height: 560 });
 }
+
+function openSearch(search = "") {
+  const open = findPage("/search/search.html");
+  if (open) {
+    if (search) {
+      open.location.search = search;
+    }
+    open.focus();
+    return;
+  }
+  messenger.windows.create({ type: "popup", url: `search/search.html${search}`, width: 640, height: 680 });
+}
+
+messenger.browserAction.onClicked.addListener(() => openSearch());
+messenger.commands.onCommand.addListener(name => {
+  if (name === "open-search") {
+    openSearch();
+  }
+});
 
 messenger.hoverActions.onAction.addListener(async (action, ids) => {
   try {
@@ -44,6 +64,7 @@ messenger.hoverActions.start({
   archiveThread: t("archiveThread"),
   deleteThread: t("deleteThread"),
   summary: t("summaryButton"),
+  moreLike: t("moreLikeButton"),
 });
 
 messenger.messageDisplayAction.onClicked.addListener(async tab => {

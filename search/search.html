@@ -1,0 +1,35 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../options/options.css" />
+    <link rel="stylesheet" href="search.css" />
+  </head>
+  <body>
+    <h1 data-i18n="searchButton"></h1>
+
+    <section id="setup" hidden>
+      <p data-i18n="searchNotReady"></p>
+      <button id="openSettings" data-i18n="aiOpenSettings"></button>
+    </section>
+
+    <section id="work" hidden>
+      <form id="form">
+        <input id="query" type="search" autocomplete="off" />
+        <button id="go" type="submit" data-i18n="searchGo"></button>
+      </form>
+      <div id="moreLike" hidden>
+        <p id="seed" class="hint"></p>
+        <div class="modes">
+          <button data-mode="both" data-i18n="moreLikeBoth"></button>
+          <button data-mode="sender" data-i18n="moreLikeSender"></button>
+          <button data-mode="subject" data-i18n="moreLikeSubject"></button>
+        </div>
+      </div>
+      <p id="status" role="status"></p>
+      <ol id="results"></ol>
+    </section>
+
+    <script src="search.js"></script>
+  </body>
+</html>

@@ -40,6 +40,36 @@
       <button id="resetPrompts" data-i18n="aiResetPrompts"></button>
     </div>
 
+    <h1 data-i18n="searchButton"></h1>
+    <p class="hint" data-i18n="searchSettingsHint"></p>
+
+    <label for="embedBaseUrl" data-i18n="aiBaseUrl"></label>
+    <input id="embedBaseUrl" type="url" placeholder="http://127.0.0.1:9931/v1" />
+
+    <label for="embedApiKey" data-i18n="aiApiKey"></label>
+    <input id="embedApiKey" type="password" autocomplete="off" />
+
+    <label for="embedModel" data-i18n="searchModel"></label>
+    <input id="embedModel" type="text" placeholder="bge-m3" />
+
+    <label for="searchMonths" data-i18n="searchWindow"></label>
+    <select id="searchMonths">
+      <option value="3" data-i18n="searchMonths3"></option>
+      <option value="6" data-i18n="searchMonths6"></option>
+      <option value="12" data-i18n="searchMonths12"></option>
+      <option value="24" data-i18n="searchMonths24"></option>
+      <option value="36" data-i18n="searchMonths36"></option>
+    </select>
+
+    <div class="row">
+      <button id="testEmbed" data-i18n="aiTestConnection"></button>
+      <button id="startIndex" data-i18n="searchStart"></button>
+      <button id="pauseIndex" data-i18n="searchPause"></button>
+      <button id="clearIndex" data-i18n="searchClear"></button>
+    </div>
+    <p id="embedStatus" role="status"></p>
+    <p id="indexStatus" role="status"></p>
+
     <script src="../ai/client.js"></script>
     <script src="options.js"></script>
   </body>

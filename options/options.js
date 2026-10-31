@@ -67,6 +67,82 @@ async function testConnection() {
 
 $("test").addEventListener("click", testConnection);
 
+function setEmbedStatus(text, failed = false) {
+  $("embedStatus").textContent = text;
+  $("embedStatus").dataset.status = failed ? "failed" : "";
+}
+
+async function testEmbedding() {
+  await Promise.all(["embedBaseUrl", "embedApiKey", "embedModel"].map(saveField));
+  const settings = await aiSettings();
+  if (!settings.embedBaseUrl.trim() || !settings.embedModel.trim()) {
+    setEmbedStatus(t("searchNeedsServer"), true);
+    return;
+  }
+  $("testEmbed").disabled = true;
+  setEmbedStatus(t("aiTestConnecting"));
+  try {
+    const started = Date.now();
+    const [vector] = await embed(settings, ["Smart Feather"], crypto.randomUUID());
+    setEmbedStatus(t("searchTestPassed", settings.embedModel.trim(), String(vector.length), String(Date.now() - started)));
+  } catch (error) {
+    setEmbedStatus(error.message, true);
+  } finally {
+    $("testEmbed").disabled = false;
+  }
+}
+
+function describeIndex(status) {
+  const count = String(status.count);
+  const skipped = status.skipped ? ` ${t("searchSkipped", String(status.skipped))}` : "";
+  switch (status.state) {
+    case "reading":
+      return t("searchReading");
+    case "indexing":
+      return t("searchProgress", count, String(status.total)) + skipped;
+    case "waiting":
+      return t("searchWaiting", count, status.error);
+    case "paused":
+      return t("searchPaused", count);
+    default:
+      return status.count ? t("searchIndexed", count) + skipped : t("searchEmpty");
+  }
+}
+
+async function refreshIndexStatus() {
+  const status = await messenger.runtime.sendMessage({ type: "indexStatus" });
+  $("indexStatus").textContent = describeIndex(status);
+  $("indexStatus").dataset.status = status.state === "waiting" ? "failed" : "";
+  $("startIndex").disabled = ["reading", "indexing"].includes(status.state);
+  $("pauseIndex").disabled = !status.enabled;
+  $("clearIndex").disabled = !status.count && !status.enabled;
+}
+
+async function indexCommand(type) {
+  setEmbedStatus("");
+  try {
+    if (type === "startIndex") {
+      await Promise.all(["embedBaseUrl", "embedApiKey", "embedModel", "searchMonths"].map(saveField));
+      const settings = await aiSettings();
+      if (!settings.embedBaseUrl.trim() || !settings.embedModel.trim()) {
+        setEmbedStatus(t("searchNeedsServer"), true);
+        return;
+      }
+    }
+    await messenger.runtime.sendMessage({ type });
+  } catch (error) {
+    setEmbedStatus(error.message, true);
+  }
+  await refreshIndexStatus();
+}
+
+$("testEmbed").addEventListener("click", testEmbedding);
+for (const id of ["startIndex", "pauseIndex", "clearIndex"]) {
+  $(id).addEventListener("click", () => indexCommand(id));
+}
+refreshIndexStatus();
+setInterval(refreshIndexStatus, 1000);
+
 $("resetPrompts").addEventListener("click", async () => {
   $("aiRevisePrompt").value = AI_DEFAULTS.aiRevisePrompt;
   $("aiReplyPrompt").value = AI_DEFAULTS.aiReplyPrompt;

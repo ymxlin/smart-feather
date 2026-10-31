@@ -24,7 +24,7 @@ $dist = New-Item -ItemType Directory -Force "$root\dist"
 $stage = "$dist\stage"
 Remove-Item -Recurse -Force $stage -ErrorAction SilentlyContinue
 New-Item -ItemType Directory $stage | Out-Null
-Copy-Item "$root\background.js", "$root\ai", "$root\api", "$root\_locales", "$root\icons", "$root\options" $stage -Recurse
+Copy-Item "$root\background.js", "$root\ai", "$root\api", "$root\_locales", "$root\icons", "$root\options", "$root\search" $stage -Recurse
 $manifest | ConvertTo-Json -Depth 10 | Set-Content "$stage\manifest.json" -Encoding utf8NoBOM
 
 $name = "smart-feather-$version.xpi"

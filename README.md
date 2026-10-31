@@ -8,10 +8,11 @@ Thanks to the help of AI and inspiring conversations with group members, I'm now
 
 An add-on for [Betterbird](https://www.betterbird.eu/) 153 ESR with extra features:
 
-- **Hover toolbar:** reply, reply all, archive, delete and AI Summary at the right edge of each message in the list.
+- **Hover toolbar:** reply, reply all, archive, delete, AI Summary and More like this at the right edge of each message in the list.
 - **Document-style writing:** Normal text and Heading 1–3, Enter for a paragraph, Shift+Enter for a line break, and one-click highlight (Ctrl+Alt+H). Ctrl+Alt+0–3 switch styles.
 - **AI Writing Assistant:** suggests a revision of a new letter, or drafts a reply from the message you're answering. You edit the suggestion before it goes into your letter.
 - **AI Summary:** summarizes a message in a small window, from the hover toolbar or the button on the message.
+- **Semantic Search:** finds mail by meaning across languages as well as by exact words, including Chinese words inside longer text.
 
 ## AI Writing Assistant
 
@@ -22,6 +23,46 @@ In the compose window, click **AI Writing Assistant**. If you've selected text, 
 AI Summary is on the hover toolbar and on the message itself. Some add-ons, such as NovaBird-Conversation, hide the message's button; the hover toolbar still works. Long messages are cut off at 12,000 characters before they're sent.
 
 Text is sent only when you click AI Summary or a button in the AI Writing Assistant window, and only to the server you chose. That means a remote server receives your letter, or the message you're replying to or summarizing. The API key is stored unencrypted in your Betterbird profile.
+
+## Semantic Search
+
+Semantic Search finds mail by meaning, so a Chinese question can find an English letter. It stays off until you set it up, and it needs an embedding server with an OpenAI-compatible `/embeddings` address.
+
+### Set it up
+
+1. Start an embedding server. For example, with llama.cpp and the model file from [ggml-org/bge-m3-Q8_0-GGUF](https://huggingface.co/ggml-org/bge-m3-Q8_0-GGUF):
+
+   ```bash
+   llama-server -m bge-m3-q8_0.gguf --embedding -c 16384 -b 8192 -ub 8192 -np 2 -ngl 99 --port 9933
+   ```
+
+2. In the add-on's Options tab, under Semantic Search, enter the server address, such as `http://127.0.0.1:9933/v1`, and the embedding model, such as `bge-m3`. Use **Test connection** to check them.
+3. Choose a time window and click **Start indexing**.
+
+Newest mail is indexed first, and indexing continues after a restart until you click **Pause**. New mail is added every 15 minutes while the server is running. Changing the time window, or removing mail from the index, takes effect the next time Betterbird starts or you click **Start indexing**.
+
+### Search
+
+Open the search window with the **Semantic Search** button in the toolbar or Alt+Shift+F, type a few words or a question, and press Enter. Clicking a result opens the message in a tab. Each result says how it was found:
+
+- **meaning:** among the 30 messages closest in meaning. There's no minimum score, so the last few may be only loosely related.
+- **exact words:** contains every word you typed. This works for names, numbers and Chinese words inside longer text.
+
+Messages found both ways rank highest. If the server is off, exact word search still works on what's already indexed.
+
+### More like this
+
+**More like this** on the hover toolbar searches from a message, and remembers your last choice:
+
+- **Same sender and similar subject:** mail from that address, closest in meaning first.
+- **Same sender:** mail from that address, newest first.
+- **Similar subject:** mail from anyone. Identical subjects come first, ignoring `Re:` and `Fwd:`, then the closest in meaning. The subject is compared with the subject and text of each message, so a match can come from the body.
+
+It looks only through indexed mail, and shows up to 30 results. Similar subject sends the message's subject to the server.
+
+### Privacy
+
+Indexing sends the text of your mail in the time window to the server, and each search sends your words there too. Trash, junk, drafts and templates are left out, along with quoted lines and links. Use a server you trust. Up to 12,000 characters of each message stay in your Betterbird profile for exact word search, with the first 5,550 or so used for meaning. Changing the embedding model rebuilds the index, and **Delete index** removes it.
 
 ## Test Env
 - FileLink Provider for Dropbox (v7)
@@ -48,6 +89,7 @@ Betterbird handles updates: it checks the releases in this repository once a day
 
 | Version | Date | Changes |
 | --- | --- | --- |
+| 0.4.0 | 2026-10-31 | Added Semantic Search, with an embedding server setting, a time window, and search by meaning and exact words. Added More like this to the hover toolbar. |
 | 0.3.1 | 2026-10-30 | The AI Writing Assistant suggests a subject when a letter has none or has moved to another topic. The subject prompt can be edited in Options. |
 | 0.3.0 | 2026-10-30 | Added the AI Writing Assistant for revising letters and drafting replies, AI Summary with Markdown formatting, and an Options page for an OpenAI-compatible server, with prompts and Test connection. |
 | 0.2.3 | 2026-10-30 | The update address now comes from the GitHub repository, so template copies watch their own releases. |
