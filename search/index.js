@@ -6,6 +6,7 @@ const MAX_CHUNKS = 4;
 const MESSAGES_PER_BATCH = 8;
 const CHUNKS_PER_REQUEST = 16;
 const MAX_HITS = 30;
+const MAX_LIST_MESSAGES = 500; // each one is looked up on its own, so a very long list would take too long
 const RANK_OFFSET = 60; // the usual constant for merging ranked lists
 const SNIPPET_CHARS = 180;
 const STARTUP_DELAY_MS = 60000;
@@ -239,7 +240,6 @@ function wordHits(words, all) {
   return all
     .filter(record => words.every(word => record.haystack.includes(word)))
     .sort((a, b) => inSubject(b) - inSubject(a) || b.date - a.date)
-    .slice(0, MAX_HITS)
     .map(record => ({ record }));
 }
 
@@ -285,11 +285,9 @@ async function searchMail({ query }) {
   merge(byWords, "words");
   merge(byMeaning, "meaning");
 
-  const results = [...merged.values()]
-    .sort((a, b) => b.score - a.score)
-    .slice(0, MAX_HITS)
-    .map(({ hit, kinds }) => toResult(hit, words, kinds));
-  return { results, meaningError, searched: all.length };
+  const ranked = [...merged.values()].sort((a, b) => b.score - a.score);
+  const results = ranked.slice(0, MAX_HITS).map(({ hit, kinds }) => toResult(hit, words, kinds));
+  return { results, ids: ranked.map(({ hit }) => hit.record.id), meaningError, searched: all.length };
 }
 
 const senderOf = author => (author.match(/<([^>]+)>/)?.[1] ?? author).trim().toLowerCase();
@@ -322,7 +320,18 @@ async function moreLikeMail({ messageId, mode }) {
     }
   }
   const kinds = mode === "both" ? ["sender", "subject"] : [mode];
-  return { results: hits.slice(0, MAX_HITS).map(hit => toResult(hit, [], kinds)), meaningError, searched: all.length, seed: seed.subject };
+  return {
+    results: hits.slice(0, MAX_HITS).map(hit => toResult(hit, [], kinds)),
+    ids: hits.map(hit => hit.record.id),
+    meaningError,
+    searched: all.length,
+  };
+}
+
+async function openResults({ title, ids }) {
+  const copies = await Promise.all(ids.slice(0, MAX_LIST_MESSAGES).map(id => allMessages({ headerMessageId: id })));
+  const messages = copies.map(found => found.find(isSearchable)).filter(Boolean);
+  await messenger.resultsList.show(title, messages.map(message => message.id));
 }
 
 async function openMail({ id }) {
@@ -333,7 +342,7 @@ async function openMail({ id }) {
   await messenger.messageDisplay.open({ messageId: message.id, location: "tab" });
 }
 
-const searchCommands = { indexStatus, startIndex, pauseIndex, clearIndex, search: searchMail, moreLike: moreLikeMail, openMail };
+const searchCommands = { indexStatus, startIndex, pauseIndex, clearIndex, search: searchMail, moreLike: moreLikeMail, openMail, openResults };
 
 messenger.runtime.onMessage.addListener(({ type, ...args }) => searchCommands[type]?.(args));
 

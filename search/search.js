@@ -4,6 +4,7 @@ const ask = (type, args) => messenger.runtime.sendMessage({ type, ...args });
 
 const KIND_LABELS = { words: "searchByWords", meaning: "searchByMeaning", sender: "moreLikeSender", subject: "moreLikeSubject" };
 const seedMessage = Number(new URLSearchParams(location.search).get("message"));
+let listing = null; // what the list button opens
 
 for (const element of document.querySelectorAll("[data-i18n]")) {
   element.textContent = t(element.dataset.i18n);
@@ -36,6 +37,9 @@ async function show(request, failure) {
   try {
     const answer = await request();
     $("results").replaceChildren(...answer.results.map(resultRow));
+    listing = answer.ids;
+    $("asList").hidden = !listing.length;
+    $("asList").textContent = t("searchAsList");
     if (answer.meaningError) {
       setStatus(failure(answer.meaningError), true);
     } else {
@@ -59,15 +63,16 @@ function search(event) {
   }
 }
 
-async function moreLike(mode) {
+function pressMode(mode) {
   for (const button of document.querySelectorAll("[data-mode]")) {
     button.setAttribute("aria-pressed", String(button.dataset.mode === mode));
   }
-  const answer = await show(() => ask("moreLike", { messageId: seedMessage, mode }), reason => t("moreLikeExactOnly", reason));
-  if (answer) {
-    $("seed").textContent = t("moreLikeSeed", answer.seed || t("searchNoSubject"));
-  }
-  messenger.storage.local.set({ searchMoreLikeMode: mode });
+}
+
+async function moreLike(mode) {
+  pressMode(mode);
+  await messenger.storage.local.set({ searchMoreLikeMode: mode });
+  await show(() => ask("moreLike", { messageId: seedMessage, mode }), reason => t("moreLikeExactOnly", reason));
 }
 
 async function load() {
@@ -79,15 +84,30 @@ async function load() {
   }
   setStatus(t(state === "indexing" ? "searchStillIndexing" : "searchReady", String(count)));
   if (seedMessage) {
-    const { searchMoreLikeMode } = await messenger.storage.local.get("searchMoreLikeMode");
+    const { searchMoreLikeMode = "both" } = await messenger.storage.local.get("searchMoreLikeMode");
+    const seed = await messenger.messages.get(seedMessage);
+    $("seed").textContent = t("moreLikeSeed", seed.subject || t("searchNoSubject"));
     $("moreLike").hidden = false;
-    moreLike(searchMoreLikeMode ?? "both");
+    moreLike(searchMoreLikeMode);
   } else {
     $("query").focus();
   }
 }
 
+async function openList() {
+  const title = $("moreLike").hidden ? $("query").value.trim() : $("seed").textContent;
+  $("asList").disabled = true;
+  try {
+    await ask("openResults", { title, ids: listing });
+    window.close();
+  } catch (error) {
+    setStatus(error.message, true);
+    $("asList").disabled = false;
+  }
+}
+
 $("form").addEventListener("submit", search);
+$("asList").addEventListener("click", openList);
 $("openSettings").addEventListener("click", () => messenger.runtime.openOptionsPage());
 for (const button of document.querySelectorAll("[data-mode]")) {
   button.addEventListener("click", () => moreLike(button.dataset.mode));

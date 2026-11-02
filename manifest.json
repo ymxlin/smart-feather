@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "Smart Feather",
   "description": "__MSG_extensionDescription__",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "default_locale": "en",
   "icons": {
     "128": "icons/icon128.png"
@@ -66,6 +66,14 @@
         "scopes": ["addon_parent"],
         "paths": [["aiHelp"]],
         "script": "api/aiHelp/implementation.js"
+      }
+    },
+    "resultsList": {
+      "schema": "api/resultsList/schema.json",
+      "parent": {
+        "scopes": ["addon_parent"],
+        "paths": [["resultsList"]],
+        "script": "api/resultsList/implementation.js"
       }
     }
   }
