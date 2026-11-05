@@ -73,6 +73,15 @@ body {
   background: color-mix(in srgb, currentColor 10%, transparent);
 }
 
+#pager {
+  justify-content: center;
+  margin-block-start: 8px;
+}
+
+#pager[hidden] {
+  display: none;
+}
+
 .subject {
   display: block;
   font-weight: 600;

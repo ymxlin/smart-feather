@@ -43,18 +43,18 @@ Newest mail is indexed first, and indexing continues after a restart until you c
 
 ### Search
 
-Open the search window with the **Semantic Search** button in the toolbar or Alt+Shift+F, type a few words or a question, and press Enter. The window shows the top 30 results, and clicking one opens the message in a tab. Each result says how it was found:
+Open the search window with the **Semantic Search** button in the toolbar or Alt+Shift+F, type a few words or a question, and press Enter. The window shows up to 100 results, 30 to a page with **Previous** and **Next**, and clicking one opens the message in a tab. You can change the limit, from 30 to 500, with **Most results per search** in the add-on's Options tab. Each result says how it was found:
 
-- **meaning:** among the 30 messages closest in meaning. There's no minimum score, so the last few may be only loosely related.
+- **meaning:** among the messages closest in meaning, as many as the limit. There's no minimum score, so later pages are only loosely related.
 - **exact words:** contains every word you typed. This works for names, numbers and Chinese words inside longer text.
 
 Messages found both ways rank highest. If the server is off, exact word search still works on what's already indexed.
 
-To act on the results, click **Show results as list**. They open in a normal Betterbird list tab, best match first and without threads, where you can select, sort, delete, archive or use the hover toolbar. The list holds up to 500 messages, and the tab isn't kept when Betterbird restarts.
+To act on the results, click **Show results as list**. They open in a normal Betterbird list tab, best match first and without threads, where you can select, sort, delete, archive or use the hover toolbar. The list holds the same results as the window, and the tab isn't kept when Betterbird restarts.
 
 ### More like this
 
-**More like this** on the hover toolbar searches from a message and shows the results in the same window, with **Show results as list** for acting on them. It remembers your last choice:
+**More like this** on the hover toolbar searches from a message and shows up to 100 results (or your limit) in the same window, 30 to a page, with **Show results as list** for acting on them. It remembers your last choice:
 
 - **Same sender and similar subject:** mail from that address, closest in meaning first.
 - **Same sender:** mail from that address, newest first.
@@ -91,6 +91,7 @@ Betterbird handles updates: it checks the releases in this repository once a day
 
 | Version | Date | Changes |
 | --- | --- | --- |
+| 0.4.3 | 2026-11-05 | Search and More like this show more than 30 results, 30 to a page, up to a limit set in Options (100 by default). Show results as list opens long lists much faster. |
 | 0.4.2 | 2026-11-05 | Renamed the search window's list button to Show results as list. Test connection now lists the server's models to choose from. The icon has a transparent background with a light-yellow rounded square. |
 | 0.4.1 | 2026-11-01 | The Advanced... button opens search results in a message list tab, best match first, for selecting, sorting, deleting and archiving. |
 | 0.4.0 | 2026-10-31 | Added Semantic Search, with an embedding server setting, a time window, and search by meaning and exact words. Added More like this to the hover toolbar. |

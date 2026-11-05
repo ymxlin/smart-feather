@@ -9,7 +9,7 @@
         "description": "Open a message list tab holding these messages.",
         "parameters": [
           { "name": "title", "type": "string", "description": "The tab's title." },
-          { "name": "messageIds", "type": "array", "items": { "type": "integer" } }
+          { "name": "headerMessageIds", "type": "array", "items": { "type": "string" }, "description": "Message-ID headers, best match first." }
         ]
       }
     ]

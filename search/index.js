@@ -5,7 +5,6 @@ const CHUNK_OVERLAP = 150;
 const MAX_CHUNKS = 4;
 const MESSAGES_PER_BATCH = 8;
 const CHUNKS_PER_REQUEST = 16;
-const MAX_HITS = 30;
 const MAX_LIST_MESSAGES = 500; // each one is looked up on its own, so a very long list would take too long
 const RANK_OFFSET = 60; // the usual constant for merging ranked lists
 const SNIPPET_CHARS = 180;
@@ -225,6 +224,11 @@ function bestChunk(record, query) {
   return { record, score, chunk };
 }
 
+async function maxHits() {
+  const limit = Number((await aiSettings()).searchMaxResults);
+  return Math.min(limit > 0 ? limit : Number(AI_DEFAULTS.searchMaxResults), MAX_LIST_MESSAGES);
+}
+
 async function meaningHits(query, all) {
   const settings = await aiSettings();
   const { searchIndexModel } = await messenger.storage.local.get("searchIndexModel");
@@ -232,7 +236,7 @@ async function meaningHits(query, all) {
   return all
     .map(record => bestChunk(record, vector))
     .sort((a, b) => b.score - a.score)
-    .slice(0, MAX_HITS);
+    .slice(0, await maxHits());
 }
 
 function wordHits(words, all) {
@@ -285,9 +289,9 @@ async function searchMail({ query }) {
   merge(byWords, "words");
   merge(byMeaning, "meaning");
 
-  const ranked = [...merged.values()].sort((a, b) => b.score - a.score);
-  const results = ranked.slice(0, MAX_HITS).map(({ hit, kinds }) => toResult(hit, words, kinds));
-  return { results, ids: ranked.map(({ hit }) => hit.record.id), meaningError, searched: all.length };
+  const ranked = [...merged.values()].sort((a, b) => b.score - a.score).slice(0, await maxHits());
+  const results = ranked.map(({ hit, kinds }) => toResult(hit, words, kinds));
+  return { results, ids: results.map(result => result.id), meaningError, searched: all.length };
 }
 
 const senderOf = author => (author.match(/<([^>]+)>/)?.[1] ?? author).trim().toLowerCase();
@@ -320,18 +324,17 @@ async function moreLikeMail({ messageId, mode }) {
     }
   }
   const kinds = mode === "both" ? ["sender", "subject"] : [mode];
+  const results = hits.slice(0, await maxHits()).map(hit => toResult(hit, [], kinds));
   return {
-    results: hits.slice(0, MAX_HITS).map(hit => toResult(hit, [], kinds)),
-    ids: hits.map(hit => hit.record.id),
+    results,
+    ids: results.map(result => result.id),
     meaningError,
     searched: all.length,
   };
 }
 
 async function openResults({ title, ids }) {
-  const copies = await Promise.all(ids.slice(0, MAX_LIST_MESSAGES).map(id => allMessages({ headerMessageId: id })));
-  const messages = copies.map(found => found.find(isSearchable)).filter(Boolean);
-  await messenger.resultsList.show(title, messages.map(message => message.id));
+  await messenger.resultsList.show(title, ids.slice(0, MAX_LIST_MESSAGES));
 }
 
 async function openMail({ id }) {

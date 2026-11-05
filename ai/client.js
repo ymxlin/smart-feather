@@ -14,6 +14,7 @@ const AI_DEFAULTS = {
   embedApiKey: "",
   embedModel: "",
   searchMonths: "12",
+  searchMaxResults: "100",
 };
 
 // Local models can take minutes to load.

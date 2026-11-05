@@ -3,8 +3,11 @@ const $ = id => document.getElementById(id);
 const ask = (type, args) => messenger.runtime.sendMessage({ type, ...args });
 
 const KIND_LABELS = { words: "searchByWords", meaning: "searchByMeaning", sender: "moreLikeSender", subject: "moreLikeSubject" };
+const PAGE_SIZE = 30;
 const seedMessage = Number(new URLSearchParams(location.search).get("message"));
 let listing = null; // what the list button opens
+let found = []; // every result of the last search
+let page = 0;
 
 for (const element of document.querySelectorAll("[data-i18n]")) {
   element.textContent = t(element.dataset.i18n);
@@ -30,13 +33,27 @@ function resultRow(result) {
   return row;
 }
 
+function showPage(number) {
+  const pages = Math.ceil(found.length / PAGE_SIZE);
+  page = Math.min(Math.max(number, 0), Math.max(pages - 1, 0));
+  const first = page * PAGE_SIZE;
+  const shown = found.slice(first, first + PAGE_SIZE);
+  $("results").replaceChildren(...shown.map(resultRow));
+  $("results").scrollTop = 0;
+  $("pager").hidden = pages < 2;
+  $("pageInfo").textContent = t("searchPageInfo", String(first + 1), String(first + shown.length), String(found.length));
+  $("prevPage").disabled = page === 0;
+  $("nextPage").disabled = page >= pages - 1;
+}
+
 /** Runs a search and shows its results. failure turns the reason meaning search failed into the status text. */
 async function show(request, failure) {
   $("go").disabled = true;
   setStatus(t("searchWorking"));
   try {
     const answer = await request();
-    $("results").replaceChildren(...answer.results.map(resultRow));
+    found = answer.results;
+    showPage(0);
     listing = answer.ids;
     $("asList").hidden = !listing.length;
     $("asList").textContent = t("searchAsList");
@@ -108,6 +125,8 @@ async function openList() {
 
 $("form").addEventListener("submit", search);
 $("asList").addEventListener("click", openList);
+$("prevPage").addEventListener("click", () => showPage(page - 1));
+$("nextPage").addEventListener("click", () => showPage(page + 1));
 $("openSettings").addEventListener("click", () => messenger.runtime.openOptionsPage());
 for (const button of document.querySelectorAll("[data-mode]")) {
   button.addEventListener("click", () => moreLike(button.dataset.mode));

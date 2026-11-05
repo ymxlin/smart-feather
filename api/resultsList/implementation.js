@@ -3,10 +3,46 @@
 this.resultsList = (() => {
   const { ExtensionCommon } = ChromeUtils.importESModule("resource://gre/modules/ExtensionCommon.sys.mjs");
   const { GlodaSyntheticView } = ChromeUtils.importESModule("resource:///modules/gloda/GlodaSyntheticView.sys.mjs");
+  const { MailServices } = ChromeUtils.importESModule("resource:///modules/MailServices.sys.mjs");
 
   const RANK_COLUMN = "smartFeatherRank";
   const LOAD_RETRIES = 100;
   const LOAD_RETRY_MS = 50;
+  const F = Ci.nsMsgFolderFlags;
+  const SKIPPED_FOLDERS = F.Trash | F.Junk | F.Drafts | F.Templates | F.Queue | F.Virtual; // as the index leaves them out
+
+  /**
+   * Finds each message by its Message-ID with one pass over the folders, using each folder's own Message-ID lookup.
+   * Asking messages.query once per message searched every folder each time, which made long lists slow.
+   */
+  function findMessages(headerMessageIds) {
+    const found = new Map();
+    for (const server of MailServices.accounts.allServers) {
+      for (const folder of server.rootFolder.descendants) {
+        if (found.size === headerMessageIds.length) {
+          return found;
+        }
+        if (folder.flags & SKIPPED_FOLDERS) {
+          continue;
+        }
+        let database;
+        try {
+          database = folder.msgDatabase;
+        } catch {
+          continue; // some folders have no message database, such as an account's top level
+        }
+        for (const id of headerMessageIds) {
+          if (!found.has(id)) {
+            const header = database?.getMsgHdrForMessageID(id);
+            if (header && header.getStringProperty("junkscore") !== "100") {
+              found.set(id, header);
+            }
+          }
+        }
+      }
+    }
+    return found;
+  }
 
   /** A column with no header, only there so the view can sort by the search's own ranking. */
   const rankColumn = ranks => ({
@@ -26,11 +62,9 @@ this.resultsList = (() => {
     getAPI(context) {
       return {
         resultsList: {
-          async show(title, messageIds) {
-            const items = messageIds.map(id => {
-              const folderMessage = context.extension.messageManager.get(id);
-              return { folderMessage, headerMessageID: folderMessage?.messageId };
-            });
+          async show(title, headerMessageIds) {
+            const found = findMessages(headerMessageIds);
+            const items = headerMessageIds.filter(id => found.has(id)).map(id => ({ folderMessage: found.get(id), headerMessageID: id }));
             // The view only reads the collection's items, so it needs no Gloda index.
             const syntheticView = new GlodaSyntheticView({ collection: { items } });
             syntheticView.customColumns = [rankColumn(new Map(items.map((item, rank) => [item.headerMessageID, rank])))];
