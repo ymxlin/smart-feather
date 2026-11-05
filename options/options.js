@@ -1,6 +1,8 @@
 const t = (key, ...args) => messenger.i18n.getMessage(key, args);
 const $ = id => document.getElementById(id);
 
+const MAX_VISIBLE_MODELS = 6;
+
 for (const element of document.querySelectorAll("[data-i18n]")) {
   element.textContent = t(element.dataset.i18n);
 }
@@ -11,7 +13,11 @@ function setStatus(text, failed = false) {
 }
 
 function showModels(models) {
-  $("models").replaceChildren(...models.map(id => Object.assign(document.createElement("option"), { value: id })));
+  const choices = $("modelChoices");
+  choices.replaceChildren(...models.map(id => new Option(id, id)));
+  choices.size = Math.min(Math.max(models.length, 2), MAX_VISIBLE_MODELS); // a size of 1 would be a closed dropdown
+  choices.value = $("aiModel").value.trim();
+  choices.hidden = !models.length;
 }
 
 async function saveField(id) {
@@ -66,6 +72,14 @@ async function testConnection() {
 }
 
 $("test").addEventListener("click", testConnection);
+
+$("modelChoices").addEventListener("change", () => {
+  $("aiModel").value = $("modelChoices").value;
+  saveField("aiModel");
+});
+$("aiModel").addEventListener("input", () => {
+  $("modelChoices").value = $("aiModel").value.trim();
+});
 
 function setEmbedStatus(text, failed = false) {
   $("embedStatus").textContent = text;

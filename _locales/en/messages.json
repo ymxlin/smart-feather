@@ -86,7 +86,7 @@
   "searchByWords": { "message": "exact words" },
   "searchByMeaning": { "message": "meaning" },
   "searchNoSubject": { "message": "(no subject)" },
-  "searchAsList": { "message": "Advanced..." },
+  "searchAsList": { "message": "Show results as list" },
   "searchMessageGone": { "message": "That message is no longer in your mail." },
   "moreLikeButton": { "message": "More like this" },
   "moreLikeSeed": { "message": "More like: $1" },  "moreLikeBoth": { "message": "Same sender and similar subject" },

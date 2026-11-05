@@ -15,9 +15,9 @@
     <input id="aiApiKey" type="password" autocomplete="off" />
     <p class="hint" data-i18n="aiApiKeyHint"></p>
 
-    <label for="aiModel" data-i18n="aiModel"></label>
-    <input id="aiModel" type="text" list="models" />
-    <datalist id="models"></datalist>
+    <label id="aiModelLabel" for="aiModel" data-i18n="aiModel"></label>
+    <input id="aiModel" type="text" />
+    <select id="modelChoices" aria-labelledby="aiModelLabel" hidden></select>
 
     <div class="row">
       <button id="test" data-i18n="aiTestConnection"></button>

@@ -16,7 +16,7 @@ An add-on for [Betterbird](https://www.betterbird.eu/) 153 ESR with extra featur
 
 ## AI Writing Assistant
 
-The AI Writing Assistant works with any OpenAI-compatible server, local or remote, and stays off until you set one up in the add-on's Options tab. Enter the server address, API key if needed, and model, then use **Test connection**. The AI Writing Assistant and AI Summary share these settings, and each kind of request has its own prompt you can edit there.
+The AI Writing Assistant works with any OpenAI-compatible server, local or remote, and stays off until you set one up in the add-on's Options tab. Enter the server address and API key if needed, then use **Test connection**. It lists the server's models to choose from, or you can type a model's name. The AI Writing Assistant and AI Summary share these settings, and each kind of request has its own prompt you can edit there.
 
 In the compose window, click **AI Writing Assistant**. If you've selected text, only that part is revised. In a reply, anything you've written above or below the quote is used as notes for the draft. It also checks the subject once the letter is written, and offers a new one if the letter has none or has moved to another topic. Replies stay in their thread when the subject changes.
 
@@ -50,11 +50,11 @@ Open the search window with the **Semantic Search** button in the toolbar or Alt
 
 Messages found both ways rank highest. If the server is off, exact word search still works on what's already indexed.
 
-To act on the results, click **Advanced...**. They open in a normal Betterbird list tab, best match first and without threads, where you can select, sort, delete, archive or use the hover toolbar. The list holds up to 500 messages, and the tab isn't kept when Betterbird restarts.
+To act on the results, click **Show results as list**. They open in a normal Betterbird list tab, best match first and without threads, where you can select, sort, delete, archive or use the hover toolbar. The list holds up to 500 messages, and the tab isn't kept when Betterbird restarts.
 
 ### More like this
 
-**More like this** on the hover toolbar searches from a message and shows the results in the same window, with **Advanced...** for acting on them. It remembers your last choice:
+**More like this** on the hover toolbar searches from a message and shows the results in the same window, with **Show results as list** for acting on them. It remembers your last choice:
 
 - **Same sender and similar subject:** mail from that address, closest in meaning first.
 - **Same sender:** mail from that address, newest first.
@@ -91,6 +91,7 @@ Betterbird handles updates: it checks the releases in this repository once a day
 
 | Version | Date | Changes |
 | --- | --- | --- |
+| 0.4.2 | 2026-11-05 | Renamed the search window's list button to Show results as list. Test connection now lists the server's models to choose from. The icon has a transparent background with a light-yellow rounded square. |
 | 0.4.1 | 2026-11-01 | The Advanced... button opens search results in a message list tab, best match first, for selecting, sorting, deleting and archiving. |
 | 0.4.0 | 2026-10-31 | Added Semantic Search, with an embedding server setting, a time window, and search by meaning and exact words. Added More like this to the hover toolbar. |
 | 0.3.1 | 2026-10-30 | The AI Writing Assistant suggests a subject when a letter has none or has moved to another topic. The subject prompt can be edited in Options. |
